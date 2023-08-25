@@ -8,3 +8,5 @@ Feature: Users module
     When the user selected status "INACTIVE"
     And the gets number of users
     Then  verify "INACTIVE" status users count matching with DB
+
+  #

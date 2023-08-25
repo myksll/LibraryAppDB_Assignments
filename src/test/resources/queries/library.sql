@@ -31,3 +31,8 @@ order by id desc;
                 join users u on bb.user_id = u.id
                 where  full_name = 'Test Student 5';
 
+select status, count(*) from users
+group by status;
+
+select count(*) from users
+where status='INACTIVE';

@@ -1,11 +1,16 @@
 package com.library.pages;
 
+import com.library.utility.BrowserUtil;
+import com.library.utility.DB_Util;
 import com.library.utility.Driver;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BookPage extends BasePage {
 
@@ -59,6 +64,32 @@ public class BookPage extends BasePage {
         String xpath = "//td[3][.='" + book + "']/../td/a";
         return Driver.getDriver().findElement(By.xpath(xpath));
     }
+
+    public void verifyBookInformation(String expectedBookName) {
+
+        String query ="select name from books where name in" +
+                " ('"+expectedBookName+"', '"+expectedBookName+"') order by added_date desc";
+        DB_Util.runQuery(query);
+        String actualBookName = DB_Util.getFirstRowFirstColumn();
+        Assert.assertEquals(expectedBookName, actualBookName);
+    }
+
+    public String getBookInfo(String infoName){
+        String locator="//form[@id='edit_book_form']//label[.='"+infoName+"']/../input";
+        return Driver.getDriver().findElement(By.xpath(locator)).getAttribute("value");
+    }
+
+    public Map<String, String> getExpectedBookInfo() {
+
+        Map<String, String> expectedBookInformation = new LinkedHashMap<>();
+        BrowserUtil.waitForVisibility(bookName, 10);
+        expectedBookInformation.put("name", bookName.getAttribute("value"));
+        expectedBookInformation.put("isbn", isbn.getAttribute("value"));
+        expectedBookInformation.put("year", year.getAttribute("value"));
+        expectedBookInformation.put("author", author.getAttribute("value"));
+        return expectedBookInformation;
+    }
+
 
 
 

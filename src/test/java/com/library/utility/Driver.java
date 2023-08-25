@@ -35,8 +35,6 @@ public class Driver {
         if (driverPool.get() == null) {
             String browserName = System.getProperty("browser") != null ? browserName = System.getProperty("browser") : ConfigurationReader.getProperty("browser");
 
-
-
             switch(browserName){
                 case "remote-chrome":
                     try {
